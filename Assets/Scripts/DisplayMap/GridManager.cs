@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class GridManager : MonoBehaviour, IMapEditor
@@ -9,14 +10,31 @@ public class GridManager : MonoBehaviour, IMapEditor
     [SerializeField] private int _Size;
     [SerializeField] private GameObject _SpriteGridPrefab;
 
-    private GridItem _start, _finish;
-    
     [SerializeField] private GridItem[] _GridItems;
     [SerializeField] private GridMap myGridMap;
 
+    // for search way 
+    private GridItem _start, _finish;
+    public event Action<IMapItem> OnChangeStartPoint;
+    public event Action<IMapItem> OnChangeFinishPoint;
+    
     private void Start()
     {
         LoadMap( myGridMap);
+    }
+    
+    public void LoadMap(IMap map)
+    {
+        Debug.Log( _GridItems.Length);
+        var items = map.Create(_Size);
+        
+        for (int i = 0; i < _Size; i++)
+        {
+            for (int j = 0; j < _Size; j++)
+            {
+                _GridItems[i +j * _Size].SetCell ( items[i + j * _Size] ) ;
+            }
+        }
     }
 
     #region BUILD GRID IN EDITOR MODE
@@ -49,14 +67,14 @@ public class GridManager : MonoBehaviour, IMapEditor
     #endregion
     
     public void ChangeStartItem( GridItem newItem)
-    {
-        if ( !ReferenceEquals(_start, null))
         {
-            _start.UpdateColor();
+            if ( !ReferenceEquals(_start, null))
+                _start.UpdateColor();
+            
+            _start = newItem;
+            OnChangeStartPoint.Invoke( _start.Cell);
         }
-        _start = newItem;
-    }
-    
+        
     public void ChangeFinishItem( GridItem newItem)
     {
         if ( !ReferenceEquals(_finish, null))
@@ -65,28 +83,14 @@ public class GridManager : MonoBehaviour, IMapEditor
         }
 
         _finish = newItem;
+        OnChangeFinishPoint.Invoke( _finish.Cell );
     }
-    
     
     public void DrawMap()
     {
         throw new System.NotImplementedException();
     }
     
-    public void LoadMap(IMap map)
-    {
-        Debug.Log( _GridItems.Length);
-        var items = map.Create(_Size);
-        
-        for (int i = 0; i < _Size; i++)
-        {
-            for (int j = 0; j < _Size; j++)
-            {
-                _GridItems[i +j * _Size].SetCell ( items[i + j * _Size] ) ;
-            }
-        }
-    }
-
     public IMapItem[,] GetEditedMap()
     {
         throw new System.NotImplementedException();
@@ -106,4 +110,5 @@ public class GridManager : MonoBehaviour, IMapEditor
     {
         throw new System.NotImplementedException();
     }
+    
 }

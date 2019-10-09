@@ -16,5 +16,8 @@ public interface IMapEditor
 
     void SetStart(IMapItem item);
     void SetFinish(IMapItem item);
+
+    event Action<IMapItem> OnChangeStartPoint;
+    event Action<IMapItem> OnChangeFinishPoint;
     
 }

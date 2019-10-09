@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-
-
+﻿using UnityEngine;
 
 public class GridItem : MonoBehaviour
 {
@@ -16,7 +10,7 @@ public class GridItem : MonoBehaviour
         get { return _cell;}
         set { _cell = Cell; }
     }
-    [SerializeField] private IMapItem _cell;
+    private IMapItem _cell;
 
 
     void Start()
@@ -57,17 +51,11 @@ public class GridItem : MonoBehaviour
         }
     }
 
-    [ExecuteInEditMode]
     public void SetCell(IMapItem cell)
     {
         _cell = cell;
     }
-    
-    public void SetCellPosition( int x, int y)
-    {
-        Cell.Position = new Vector2Int(x,y);
-    }
-    
+
     public void SetIsAvailable( bool available)
     {
         Cell.IsPassable = available;

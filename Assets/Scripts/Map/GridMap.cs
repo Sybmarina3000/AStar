@@ -21,6 +21,7 @@ public class GridMap : MonoBehaviour, IMap
         public Point( int x, int y)
         {
             Position = new Vector2Int(x,y);
+            IsPassable = true;
         }
     }
 
@@ -42,6 +43,7 @@ public class GridMap : MonoBehaviour, IMap
             {
                 grid[i ,j] = new Point(i,j);
                 grid[i ,j].Position = new Vector2Int(i,j);
+                grid[i, j].Cost = size * 2;
             }
         }
 
@@ -51,8 +53,6 @@ public class GridMap : MonoBehaviour, IMap
     
     private void GenerateNeighborsMass( IMapItem[,] grid)
     {
-       _neighborsMap?.Clear();
-        
         List<IMapItem> neighbor = new List<IMapItem>();
         for (var i = 0; i < _size; i++)
         {
@@ -67,18 +67,14 @@ public class GridMap : MonoBehaviour, IMap
                     neighbor.Add(grid[i, j + 1]);
                 if (j > 0)
                     neighbor.Add(grid[i, j - 1]);
-                
+
                 _neighborsMap.Add(grid[i, j], neighbor.ToArray());
             }
         }
-        
-        Debug.Log(" nee " + _neighborsMap.Count);
     }
     
     public IMapItem[] GetNeighbors(IMapItem current)
     {
-        List<IMapItem> neighbors = new List<IMapItem>();
-        
         return _neighborsMap[current];
     }
 
