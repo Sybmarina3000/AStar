@@ -5,7 +5,8 @@ using UnityEngine;
 
 public interface IMapItem : IStarACalculable
 {
-    bool IsAvailable { get; set; }
+    Vector2Int Position { get; set; }
+    bool IsPassable { get; set; }
 }
 
 public interface IMap

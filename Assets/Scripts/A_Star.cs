@@ -32,7 +32,7 @@ public class A_Star : MonoBehaviour
 
             foreach (var neighbor in neighbors)
             {
-                if( !neighbor.IsAvailable)
+                if( !neighbor.IsPassable)
                     continue;
                 
                 int cost = Heuristic(current, neighbor);

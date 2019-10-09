@@ -7,27 +7,18 @@ public class Map : MonoBehaviour, IMap
     private int size;
     public class Point: IMapItem
     {
-        public Vector2Int _position;
-    
-        public bool IsAvailable { get; set; }
+        public Vector2Int Position { get; set; }
+        public bool IsPassable { get; set; }
 
         // for A*
         public IMapItem Last { get; set; }
         public int Cost { get; set; }
-
-        public Point()
-        {
-//            Cost = size + size;
-        }
     }
     
     private Point[,] _TestMap;
     private Dictionary<Point, Point[]> _map;
-    
-    private IMap _mapImplementation;
 
-
-    // Start is called before the first frame update
+    private
     void Start()
     {
         _TestMap = new Point[5,5];
@@ -44,13 +35,12 @@ public class Map : MonoBehaviour, IMap
 
     public IMapItem[] GetNeighbors(IMapItem current)
     {
-//        _TestMap
         return _map[(Point)current];
     }
 
     public int GetDistance(IMapItem one, IMapItem two)
     {
-        return Mathf.Abs(((Point)one)._position.x - ((Point)one)._position.x ) 
-               + Mathf.Abs(((Point)one)._position.y - ((Point)one)._position.y );
+        return Mathf.Abs(((Point)one).Position.x - ((Point)one).Position.x ) 
+               + Mathf.Abs(((Point)one).Position.y - ((Point)one).Position.y );
     }
 }
