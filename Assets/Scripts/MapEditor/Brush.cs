@@ -36,8 +36,7 @@ public class Brush : Singleton<Brush>
         
         CurrentBrush = ETypeBrush.impassable;
     }
-
-
+    
     public void ChangeBrush(ETypeBrush newBrush)
     {
         CurrentBrush = newBrush;

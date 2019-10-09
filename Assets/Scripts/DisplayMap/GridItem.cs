@@ -10,17 +10,22 @@ public class GridItem : MonoBehaviour
     private GridManager _gridManager;
     private SpriteRenderer _sprite;
     
-    public IMapItem Cell { get; private set; }
+    public AbstractIMapItem Cell
+    {
+        get { return _cell;}
+        set { _cell = Cell; }
+    }
+    private AbstractIMapItem _cell;
     
     void Start()
     {
         _gridManager = GetComponentInParent<GridManager>();
         _sprite = GetComponent<SpriteRenderer>();
-        Cell = new Map.Point();
     }
     
     void OnMouseDown()
     {
+        Debug.Log("I am " + _cell.Position.ToString());
         _sprite.color = Brush.Instance.GetCurrentColor();
 
         switch (Brush.Instance.CurrentBrush)
@@ -50,6 +55,14 @@ public class GridItem : MonoBehaviour
         }
     }
 
+    [ExecuteInEditMode]
+    public void SetCell(AbstractIMapItem cell)
+    {
+        _cell = cell;
+        Debug.Log( "my cell = " + _cell.Position);
+       
+    }
+    
     public void SetCellPosition( int x, int y)
     {
         Cell.Position = new Vector2Int(x,y);

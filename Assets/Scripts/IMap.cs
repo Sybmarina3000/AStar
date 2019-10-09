@@ -11,6 +11,8 @@ public interface IMapItem : IStarACalculable
 
 public interface IMap
 {
+    IMapItem[,] Create( int size);
+    
     IMapItem[] GetNeighbors(IMapItem current);
     int GetDistance(IMapItem one, IMapItem two);
 }
