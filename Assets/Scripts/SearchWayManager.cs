@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using DisplayMap;
+using Map;
 using UnityEngine;
 using UnityEngine.Events;
+using WayAlgorithm;
 
 public class SearchWayManager : MonoBehaviour
 {
-    [SerializeField] private GridManager _gridManager;
-    private IMapEditor Editor;
-    [SerializeField] private GridMap map;
+    private IMapEditor _mapEditor;
+    private ISearchWayAlgorithm _SearchAlgoritm;
     
-    [SerializeField] private A_Star _SearchAlgoritm;
     [SerializeField] private UnityEvent OnCanCalculatePath;
 
     public IMapItem _Start { get; set; }
@@ -18,11 +16,11 @@ public class SearchWayManager : MonoBehaviour
     
     private void Start()
     {
-        Editor = _gridManager;
-        _SearchAlgoritm.Map = map;
+        _mapEditor = RealizationBox.Instance.MapEditor;
+        _SearchAlgoritm = RealizationBox.Instance.SearchWayAlgorithm;
         
-        Editor.OnChangeStartPoint += ChangeStartItem;
-        Editor.OnChangeFinishPoint += ChangeFinishItem;
+        _mapEditor.OnChangeStartPoint += ChangeStartItem;
+        _mapEditor.OnChangeFinishPoint += ChangeFinishItem;
     }
 
     // Start is called before the first frame update
@@ -47,8 +45,9 @@ public class SearchWayManager : MonoBehaviour
     public void Calculate()
     {
         _SearchAlgoritm.CalculateWay( _Start, _Finish);
-        Editor.DrawWay(_SearchAlgoritm.BuildPath().ToArray());
+        var way = _SearchAlgoritm.BuildPath()?.ToArray();
+        if( way != null)
+             _mapEditor.DrawWay( way);
     }
-    
     
 }

@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Map;
 
-public interface IMapEditor
+namespace DisplayMap
 {
-    void DrawMap();
+    public interface IMapEditor
+    {
+        void LoadMap(IMap map);
 
-    
-    void LoadMap(IMap map);
-    
-    IMapItem[,] GetEditedMap();
-    
-    void DrawWay( IMapItem[] way);
+        void ClearWay();
+        void DrawWay( IMapItem[] way);
 
-    event Action<IMapItem> OnChangeStartPoint;
-    event Action<IMapItem> OnChangeFinishPoint;
+        event Action<IMapItem> OnChangeStartPoint;
+        event Action<IMapItem> OnChangeFinishPoint;
     
+    }
 }

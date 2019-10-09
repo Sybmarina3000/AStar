@@ -1,74 +1,85 @@
-﻿using UnityEngine;
+﻿using System;
+using Map;
+using UnityEngine;
 
-public class GridItem : MonoBehaviour
+namespace DisplayMap
 {
-    private GridManager _gridManager;
-    private SpriteRenderer _sprite;
+    public class GridItem : MonoBehaviour
+    {
+        private GridMapEditor _gridMapEditor;
+        private SpriteRenderer _sprite;
     
-    public IMapItem Cell
-    {
-        get { return _cell;}
-        set { _cell = Cell; }
-    }
-    private IMapItem _cell;
-
-
-    void Start()
-    {
-        _gridManager = GetComponentInParent<GridManager>();
-        _sprite = GetComponent<SpriteRenderer>();
-    }
-    
-    void OnMouseDown()
-    {
-        Debug.Log("I am " + _cell.Position.ToString());
-        _sprite.color = Brush.Instance.GetCurrentColor();
-
-        switch (Brush.Instance.CurrentBrush)
+        public IMapItem Cell { get { return _cell;} }
+        private IMapItem _cell;
+        
+        void Start()
         {
-            case ETypeBrush.start:
+            _gridMapEditor = GetComponentInParent<GridMapEditor>();
+            _sprite = GetComponent<SpriteRenderer>();
+        }
+
+        private void OnMouseOver()
+        {
+            if (Input.GetMouseButton(0))
             {
-                SetIsAvailable(true);
-                _gridManager.ChangeStartItem(this);        
-                break;
-            }
-            case ETypeBrush.finish:
-            {
-                SetIsAvailable(true);
-                _gridManager.ChangeFinishItem(this);
-                break;
-            }
-            case ETypeBrush.passable:
-            {
-                SetIsAvailable(true);
-                break;
-            }
-            case ETypeBrush.impassable:
-            {
-                SetIsAvailable(false);
-                break;
+                PaintItem();
             }
         }
-    }
 
-    public void SetCell(IMapItem cell)
-    {
-        _cell = cell;
-    }
+        public void PaintItem()
+        {
+            
+            if (!_gridMapEditor.CheckCanChangeColor(this))
+                return;
+            
+            _sprite.color = Brush.Instance.GetCurrentColor();
+            
+            switch (Brush.Instance.CurrentBrush)
+            {
+                case ETypeBrush.start:
+                {
+                    SetIsAvailable(true);
+                    _gridMapEditor.ChangeStartItem(this);        
+                    break;
+                }
+                case ETypeBrush.finish:
+                {
+                    SetIsAvailable(true);
+                    _gridMapEditor.ChangeFinishItem(this);
+                    break;
+                }
+                case ETypeBrush.passable:
+                {
+                    SetIsAvailable(true);
+                    break;
+                }
+                case ETypeBrush.impassable:
+                {
+                    SetIsAvailable(false);
+                    break;
+                }
+            }
+        }
 
-    public void SetIsAvailable( bool available)
-    {
-        Cell.IsPassable = available;
-    }
+        public void SetCell(IMapItem cell)
+        {
+            _cell = cell;
+        }
+
+        public void SetIsAvailable( bool available)
+        {
+            Cell.IsPassable = available;
+        }
     
-    public void UpdateColor()
-    {
-        _sprite.color = Cell.IsPassable ? Brush.Instance.GetPassableColor() : Brush.Instance.GetImpassableColor();
-    }
+        public void UpdateColor()
+        {
+            _sprite.color = Cell.IsPassable ? Brush.Instance.GetPassableColor() : Brush.Instance.GetImpassableColor();
+        }
     
-    public void SetColor( Color newColor)
-    {
-        _sprite.color = newColor;
-    }
+        public void SetColor( Color newColor)
+        {
+            _sprite.color = newColor;
+        }
     
+    }
 }
