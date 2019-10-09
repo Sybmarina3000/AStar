@@ -83,4 +83,5 @@ public class GridMap : MonoBehaviour, IMap
         return Mathf.Abs((one).Position.x - (one).Position.x ) 
                + Mathf.Abs((one).Position.y - (one).Position.y );
     }
+    
 }

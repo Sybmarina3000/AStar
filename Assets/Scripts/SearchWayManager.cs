@@ -47,5 +47,8 @@ public class SearchWayManager : MonoBehaviour
     public void Calculate()
     {
         _SearchAlgoritm.CalculateWay( _Start, _Finish);
+        Editor.DrawWay(_SearchAlgoritm.BuildPath().ToArray());
     }
+    
+    
 }

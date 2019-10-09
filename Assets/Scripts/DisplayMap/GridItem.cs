@@ -66,4 +66,9 @@ public class GridItem : MonoBehaviour
         _sprite.color = Cell.IsPassable ? Brush.Instance.GetPassableColor() : Brush.Instance.GetImpassableColor();
     }
     
+    public void SetColor( Color newColor)
+    {
+        _sprite.color = newColor;
+    }
+    
 }

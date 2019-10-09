@@ -30,8 +30,8 @@ public class A_Star : MonoBehaviour
 
             foreach (var neighbor in neighbors)
             {
-//                if( !neighbor.IsPassable)
-//                    continue;
+                if( !neighbor.IsPassable)
+                    continue;
                 
                 int cost = Heuristic(current, neighbor);
                 if (cost < neighbor.Cost)
@@ -46,7 +46,6 @@ public class A_Star : MonoBehaviour
             current = _queue.Pop();
         }
         Debug.Log("DONE");
-        BuildPath();
     }
 
     private int Heuristic(IMapItem current, IMapItem next)
@@ -54,18 +53,23 @@ public class A_Star : MonoBehaviour
         return current.Cost+1 + Map.GetDistance(_finish, next);
     }
 
-    private Stack<IMapItem> BuildPath()
+    public Stack<IMapItem> BuildPath()
     {
         Stack<IMapItem> path = new Stack<IMapItem>();
 
-        IMapItem current = _finish;
+        Debug.Log(" start" + _start.Position);
+        IMapItem current = _finish.Last;
+        string s = " ";
         while (current != _start)
         {
             path.Push(current);
             current = current.Last;
-            Debug.Log(" " + current.Position);
+            s  += current.Position;
         }
 
+        Debug.Log(s);
+        Debug.Log( " finish" + _finish.Position);
         return path;
+        
     }
 }

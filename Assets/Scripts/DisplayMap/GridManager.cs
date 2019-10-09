@@ -98,17 +98,15 @@ public class GridManager : MonoBehaviour, IMapEditor
 
     public void DrawWay(IMapItem[] way)
     {
-        throw new System.NotImplementedException();
+        int i, j;
+        foreach (var cell in way)
+        {
+            i = cell.Position.x * _Size;
+            j = cell.Position.y ;
+
+            _GridItems[i + j].SetColor( Color.magenta);
+        }
+//        throw new System.NotImplementedException();
     }
 
-    public void SetStart(IMapItem item)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void SetFinish(IMapItem item)
-    {
-        throw new System.NotImplementedException();
-    }
-    
 }
