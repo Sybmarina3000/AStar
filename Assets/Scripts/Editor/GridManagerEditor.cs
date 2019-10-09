@@ -12,7 +12,7 @@ public class GridManagerEditor : Editor{
         base.OnInspectorGUI();
         if (GUILayout.Button("Generate map (in Edit Mode)"))
         {
-            ((GridManager) target).LoadMap();
+            ((GridManager) target).BuildGrid();
         }
     }
 }

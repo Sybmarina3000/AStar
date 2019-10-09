@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class GridMap : MonoBehaviour, IMap
+public class GridMap : IMap
 {
     private int _size;
     
     [Serializable]
-    public class Point: AbstractIMapItem 
+    public class Point: IMapItem 
     {
         public Vector2Int Position { get; set; }
         public bool IsPassable { get; set; }
@@ -23,35 +23,43 @@ public class GridMap : MonoBehaviour, IMap
             Position = new Vector2Int(x,y);
         }
     }
-    
+
+    private void Start()
+    {
+        Debug.Log("Dick " + _neighborsMap.Count);
+        
+    }
+
     private IMapItem[,] _grid;
-    private Dictionary<IMapItem, IMapItem[]> _neighborsMap;
+    private Dictionary<IMapItem, IMapItem[]> _neighborsMap = new Dictionary<IMapItem, IMapItem[]>();
 
     private IMapEditor _EditorMap;
     
+    
     [ExecuteInEditMode]
-    public IMapItem[,] Create(int size)
+    public override IMapItem[] Create(int size)
     {
         _size = size;
-        _grid = new IMapItem[size,size];
+        _grid = new IMapItem[size , size];
         
         for (var i = 0; i < size; i++)
         {
             for (var j = 0; j < size; j++)
             {
-                _grid[i, j] = new Point(i,j);
+                _grid[i ,j] = new Point(i,j);
+                _grid[i ,j].Position = new Vector2Int(i,j);
             }
         }
 
         GenerateNeighborsMass();
-        return _grid;
+        return _neighborsMap.Keys.ToArray();
     }
 
     [ExecuteInEditMode]
     private void GenerateNeighborsMass()
     {
-        _neighborsMap?.Clear();
-        _neighborsMap = new Dictionary<IMapItem, IMapItem[]>();
+       // _neighborsMap?.Clear();
+//        _neighborsMap = new Dictionary<IMapItem, IMapItem[]>();
         
         List<IMapItem> neighbor = new List<IMapItem>();
         for (var i = 0; i < _size; i++)
@@ -71,16 +79,18 @@ public class GridMap : MonoBehaviour, IMap
                 _neighborsMap.Add(_grid[i, j], neighbor.ToArray());
             }
         }
+        
+        Debug.Log(" nee " + _neighborsMap.Count);
     }
     
-    public IMapItem[] GetNeighbors(IMapItem current)
+    public override IMapItem[] GetNeighbors(IMapItem current)
     {
         List<IMapItem> neighbors = new List<IMapItem>();
         
         return _neighborsMap[current];
     }
 
-    public int GetDistance(IMapItem one, IMapItem two)
+    public override int GetDistance(IMapItem one, IMapItem two)
     {
         return Mathf.Abs((one).Position.x - (one).Position.x ) 
                + Mathf.Abs((one).Position.y - (one).Position.y );

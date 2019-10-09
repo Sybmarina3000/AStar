@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -10,12 +11,12 @@ public class GridItem : MonoBehaviour
     private GridManager _gridManager;
     private SpriteRenderer _sprite;
     
-    public AbstractIMapItem Cell
+    public IMapItem Cell
     {
         get { return _cell;}
         set { _cell = Cell; }
     }
-    private AbstractIMapItem _cell;
+    [SerializeField] private IMapItem _cell;
     
     void Start()
     {
@@ -56,7 +57,7 @@ public class GridItem : MonoBehaviour
     }
 
     [ExecuteInEditMode]
-    public void SetCell(AbstractIMapItem cell)
+    public void SetCell(IMapItem cell)
     {
         _cell = cell;
         Debug.Log( "my cell = " + _cell.Position);

@@ -1,18 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public interface IMapItem : IStarACalculable
+[Serializable]
+public abstract class IMapItem //: //IStarACalculable
 {
-    Vector2Int Position { get; set; }
-    bool IsPassable { get; set; }
+    public Vector2Int Position { get; set; }
+    public bool IsPassable { get; set; }
+    
+    public IMapItem Last { get; set; }
+    public int Cost { get; set; }
 }
 
-public interface IMap
+[Serializable]
+public abstract class IMap : MonoBehaviour
 {
-    IMapItem[,] Create( int size);
+    public abstract IMapItem[] Create( int size);
     
-    IMapItem[] GetNeighbors(IMapItem current);
-    int GetDistance(IMapItem one, IMapItem two);
+    public abstract IMapItem[] GetNeighbors(IMapItem current);
+    public abstract int GetDistance(IMapItem one, IMapItem two);
 }
