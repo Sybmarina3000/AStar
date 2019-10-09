@@ -11,15 +11,12 @@ public class GridManager : MonoBehaviour, IMapEditor
 
     private GridItem _start, _finish;
     
-    [SerializeField]
-    private GameObject[ ] _sprites;
-
-    
+    [SerializeField] private GridItem[] _GridItems;
     [SerializeField] private GridMap myGridMap;
 
     private void Start()
     {
-        LoadMap();
+        LoadMap( myGridMap);
     }
 
     #region BUILD GRID IN EDITOR MODE
@@ -27,27 +24,26 @@ public class GridManager : MonoBehaviour, IMapEditor
     public void BuildGrid()
     {
         DeleteLastGrid();
-        _sprites = new GameObject[_Size * _Size];
+        _GridItems = new GridItem[_Size * _Size];
         
         for (int i = 0; i < _Size; i++)
         {
             for (int j = 0; j < _Size; j++)
             {
-                _sprites[i + j * _Size ] = Instantiate(_SpriteGridPrefab,this.transform);
-                _sprites[i+  j * _Size].transform.position = new Vector2( i, j );
+                _GridItems[i + j * _Size ] = Instantiate(_SpriteGridPrefab, new Vector2( i, j ), Quaternion.identity, this.transform).GetComponent<GridItem>();
             }    
         }
     }
     private void DeleteLastGrid( )
     {
-       if( ReferenceEquals( _sprites, null))
+       if( ReferenceEquals( _GridItems, null))
            return;
 
-       foreach (var item in _sprites)
+       foreach (var item in _GridItems)
        {
-           DestroyImmediate(item);
+           DestroyImmediate(item.gameObject);
        }
-       _sprites = null;
+       _GridItems = null;
     }
     
     #endregion
@@ -71,28 +67,22 @@ public class GridManager : MonoBehaviour, IMapEditor
         _finish = newItem;
     }
     
+    
     public void DrawMap()
     {
         throw new System.NotImplementedException();
     }
-
+    
     public void LoadMap(IMap map)
     {
-        throw new System.NotImplementedException();
-    }
-
-   
-    public void LoadMap()
-    {
-        Debug.Log( _sprites.Length);
-        var items = myGridMap.Create(_Size);
+        Debug.Log( _GridItems.Length);
+        var items = map.Create(_Size);
         
         for (int i = 0; i < _Size; i++)
         {
             for (int j = 0; j < _Size; j++)
             {
-                _sprites[i +j * _Size].GetComponent<GridItem>().SetCell ( items[i + j * _Size] ) ;
-                Debug.Log("cc " + _sprites[i + j * _Size].GetComponent<GridItem>().Cell.Position.ToString());
+                _GridItems[i +j * _Size].SetCell ( items[i + j * _Size] ) ;
             }
         }
     }

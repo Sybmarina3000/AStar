@@ -17,7 +17,8 @@ public class GridItem : MonoBehaviour
         set { _cell = Cell; }
     }
     [SerializeField] private IMapItem _cell;
-    
+
+
     void Start()
     {
         _gridManager = GetComponentInParent<GridManager>();
@@ -60,8 +61,6 @@ public class GridItem : MonoBehaviour
     public void SetCell(IMapItem cell)
     {
         _cell = cell;
-        Debug.Log( "my cell = " + _cell.Position);
-       
     }
     
     public void SetCellPosition( int x, int y)
