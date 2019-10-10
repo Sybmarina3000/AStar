@@ -98,14 +98,13 @@ namespace DisplayMap
             if (ReferenceEquals(_way, null))
                 return;
             
-            Color color = Brush.Instance.GetPassableColor();
             int i, j;
             foreach (var cell in _way)
             {
                 i = cell.Position.x * _Size;
                 j = cell.Position.y ;
 
-                _GridItems[i + j].SetColor( color );
+                _GridItems[i + j].UpdateColor();
             }
         }
 
